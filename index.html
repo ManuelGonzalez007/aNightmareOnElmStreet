@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>A nightmare on Elm Street</title>
+	</head>
+	<body>
+
+		<style>
+
+			body {
+			  overflow: hidden;
+			}
+
+			div {
+			  margin: 175px auto;
+			}
+
+			.drop {
+			  position: relative;
+			  width: 20px;
+			  height: 20px;
+			  top: -30px;
+			  margin: 0 auto;
+			  background: #F00;
+			  border-radius: 20px;
+			  animation-name: drip;
+			  animation-timing-function: cubic-bezier(1,0,.91,.19);
+			  animation-duration: 2s;
+			  animation-iteration-count: infinite;
+			}
+
+			.drop:before {
+			  content: "";
+			  position: absolute;
+			  width: 0;
+			  height: 0;
+			  border-left: 10px solid transparent;
+			  border-right: 10px solid transparent;
+			  border-bottom: 30px solid rgba(255,0,0,1);
+			  top: -22px;
+			}
+
+			.wave {
+			  position: relative;
+			  opacity: 0;
+			  top: 0;
+			  width: 2px;
+			  height: 1px;
+			  border: #F00 7px solid;
+			  border-radius: 300px / 150px;
+			  animation-name: ripple;
+			  animation-delay: 2s;
+			  animation-duration: 2s;
+			  animation-iteration-count: infinite;
+			}
+
+			.wave:after {
+			  content: "";
+			  position: absolute;
+			  opacity: 0;
+			  top: -5px;
+			  left: -5px;
+			  width: 2px;
+			  height: 1px;
+			  border: #F00 5px solid;
+			  border-radius: 300px / 150px;
+			  animation-name: ripple-2;
+			  animation-duration: 2s;
+			  animation-iteration-count: infinite;
+			}
+
+			@keyframes ripple {
+			    from {
+			      opacity: 1;
+			    }
+			    to {
+			      width: 600px;
+			      height: 300px;
+			      border-width: 1px;
+			      top: -100px;
+			      opacity: 0;
+			    }
+			}
+
+			@keyframes ripple-2 {
+			    0% {
+			      opacity: 1;
+			    }
+			    50% {
+			      opacity: 0;
+			    }
+			  100% {
+			    width: 200px;
+			    height: 100px;
+			    border-width: 1px;
+			    top: 100px;
+			    left: 200px;
+			  }
+			}
+
+			@keyframes drip {
+			    to {
+			      top: 190px;
+			    }
+			}
+
+			#nancy{
+
+			   color:silver;
+		       text-shadow:
+		       4px 4px 1px #300000,
+		       4px 6px 1px #400000,
+		       4px 8px 1px #500000,
+		       4px 10px 1px #600000,
+		       4px 12px 1px #700000,
+		       4px 14px 1px #800000,
+		       4px 16px 1px #900000,
+		       4px 18px 1px #A00000,
+		       4px 20px 1px #B00000,
+		       4px 22px 1px #C00000,
+		       4px 24px 1px #D00000,
+		       4px 26px 1px #E00000,
+		       4px 28px 1px #F00000,
+		       4px 30px 1px #FA0000,
+		       4px 32px 1px #FB0000,
+		       4px 34px 1px #FC0000,
+		       4px 36px 1px #FD0000,
+		       4px 38px 1px #FE0000,
+		       4px 40px 2px #FF0000;
+		   }
+
+			#blood2 {
+				font-family: nosifer;
+			    color: #FF0000;
+			    font-size:5em;
+			    transition: all .25s ease;
+			    animation: drips 2.5s infinite alternate;
+			      
+			}
+
+			@keyframes drips {
+			    to {
+			        text-shadow:
+			       4px 4px 1px #300000,
+			       4px 6px 1px #400000,
+			       4px 8px 1px #500000,
+			       4px 10px 1px #600000,
+			       4px 12px 1px #700000,
+			       4px 14px 1px #800000,
+			       4px 16px 1px #900000,
+			       4px 18px 1px #A00000,
+			       4px 20px 1px #B00000,
+			       4px 22px 1px #C00000,
+			       4px 24px 1px #D00000,
+			       4px 26px 1px #E00000,
+			       4px 28px 1px #F00000,
+			       4px 30px 1px #FA0000,
+			       4px 32px 1px #FB0000,
+			       4px 34px 1px #FC0000,
+			       4px 36px 1px #FD0000,
+			       4px 38px 1px #FE0000,
+			       4px 40px 2px #FF0000;
+			    }
+			}
+
+			#glove{
+				animation: rotation 2s infinite linear;
+			}
+			@keyframes rotation {
+				from {
+					transform: rotate(0deg);
+				}
+				to {
+					transform: rotate(359deg);
+				}
+			}
+
+			body{
+				background-color: black;
+			}
+
+			#nightmare{
+				display: block;
+			    margin: auto;
+			}
+
+			img:hover{
+				cursor: pointer;
+			}
+
+		</style>
+
+		<audio id="audio">
+			<source src="audio.mp3" type="audio/mpeg">
+		</audio>
+		
+
+
+		<img id="nightmare" onclick="dontFallAsleep()" src="image.png" alt="A nightmare on Elm Street movie poster">
+
+		  <div id="animation" class="drop"></div>
+	  	  <div id="animation2" class="wave"></div>
+
+		<script>
+
+			var audio = document.getElementById("audio")
+			var image = document.getElementById("nightmare")
+			var text = document.createElement("p")
+			var text2 = document.createElement("p")
+			var audio2 = document.createElement("audio")
+			var imageHat = document.createElement("img")
+			var audio3 = document.createElement("audio")
+			var audio4 = document.createElement("audio")
+			var audio5 = document.createElement("audio")
+			var imageGlove = document.createElement("img")
+			var text3 = document.createElement("p")
+			var audio6 = document.createElement("audio")
+			var audio7 = document.createElement("audio")
+			var audio8 = document.createElement("audio")
+			var audio9 = document.createElement("audio")
+
+			function dontFallAsleep() {
+				audio.play();
+				image.remove();
+				document.getElementById("animation").remove();
+				document.getElementById("animation2").remove();
+				setTimeout(function(){text.innerHTML="Whatever"}, 100);
+				setTimeout(function(){text.innerHTML=" you"}, 900);
+				setTimeout(function(){text.innerHTML=" do"}, 1400);
+				setTimeout(function(){text.innerHTML=" Don't"}, 2500);
+				setTimeout(function(){text.innerHTML+=" fall"}, 3500);
+				setTimeout(function(){text.innerHTML+=" asleep"}, 4500);
+				text.style.color="#011c09";
+				text.style.fontSize="150px";
+				text.style.textAlign="center";
+				text.id="nancy";
+				document.body.appendChild(text);
+			}
+
+			audio.onended = function() {nancySleep()};
+
+
+			function nancySleep() {
+				setTimeout(function(){scaryLaughs()}, 9000);
+				text.remove();
+				audio9.src="audio9.mp3";
+			    audio9.autoplay = "true";
+			    document.body.appendChild(audio9);
+				document.body.background="image6.png";
+			    document.body.style.backgroundSize="400px";
+			    document.body.style.backgroundRepeat = "no-repeat";
+			    document.body.style.backgroundPosition="50% 0%";
+			}
+
+			function scaryLaughs() {
+				document.body.background= "";
+				audio6.src="audio6.mp3";
+			    audio6.autoplay = "true";
+			    document.body.appendChild(audio6);
+			}
+
+			audio6.onended = function() {sweetDreams()};
+
+
+			function sweetDreams() {
+				setTimeout(function(){freddySong()}, 3000);
+				document.body.background="image7.jpg";
+				document.body.style.backgroundSize="cover"
+				text3.innerHTML = "Sweet Dreams<br>Nancy"
+			    text3.style.color="red";
+			    text3.style.fontSize="100px";
+			    text3.style.fontWeight= "bold";
+			    document.body.appendChild(text3);
+			}
+
+			
+			function freddySong() {
+			  text3.remove();
+			  audio2.src="audio2.mp3";
+			  audio2.autoplay = "true";
+			  document.body.appendChild(audio2);
+		  	  setTimeout(function(){text2.innerHTML="One"}, 1500);
+			  setTimeout(function(){text2.innerHTML="Two"}, 3000);
+			  setTimeout(function(){text2.innerHTML="Freddy's"}, 3800);
+			  setTimeout(function(){text2.innerHTML+=" coming"}, 4300);
+			  setTimeout(function(){text2.innerHTML+=" for"}, 4800);
+			  setTimeout(function(){text2.innerHTML+=" you"}, 5500);
+			  setTimeout(function(){text2.innerHTML="Three"}, 8000);
+			  setTimeout(function(){text2.innerHTML="Four"}, 9000);
+			  setTimeout(function(){text2.innerHTML="Better"}, 10000);
+			  setTimeout(function(){text2.innerHTML+=" lock"}, 10500);
+			  setTimeout(function(){text2.innerHTML+=" your"}, 11000);
+			  setTimeout(function(){text2.innerHTML+=" door"}, 11500);
+			  setTimeout(function(){text2.innerHTML="Five"}, 14500);
+			  setTimeout(function(){text2.innerHTML="Six"}, 15500);
+			  setTimeout(function(){text2.innerHTML="Grab"}, 16500);
+			  setTimeout(function(){text2.innerHTML+=" your"}, 17000);
+			  setTimeout(function(){text2.innerHTML+=" crucifix"}, 17500);
+			  setTimeout(function(){text2.innerHTML="Seven"}, 19000);
+			  setTimeout(function(){text2.innerHTML="Eight"}, 20000);
+			  setTimeout(function(){text2.innerHTML="Gonna"}, 21000);
+			  setTimeout(function(){text2.innerHTML+=" stay"}, 21500);
+			  setTimeout(function(){text2.innerHTML+=" up"}, 22000);
+			  setTimeout(function(){text2.innerHTML+=" late"}, 22500);
+			  setTimeout(function(){text2.innerHTML="Nine"}, 23500);
+			  setTimeout(function(){text2.innerHTML="Ten"}, 24500);
+			  setTimeout(function(){text2.innerHTML="Never"}, 26000);
+			  setTimeout(function(){text2.innerHTML+=" sleep"}, 26500);
+			  setTimeout(function(){text2.innerHTML+=" again"}, 27000);
+			  text2.style.color="black";
+			  text2.style.fontSize="120px";
+			  text2.style.fontWeight= "bold";
+			  text2.style.textAlign="center";
+			  text2.id="blood2";
+			  document.body.appendChild(text2);
+			  document.body.background="image2.jpg";
+			  imageHat.src="image4.png";
+			  imageHat.style.width="150px";
+			  imageHat.style.position = "absolute";
+			  imageHat.style.top = "350px";
+			  imageHat.style.right = "600px";
+			  document.body.appendChild(imageHat);
+			}
+
+			audio2.onended = function() {clock()};
+
+			function clock(){
+			  audio3.src="audio3.mp3";
+			  audio3.autoplay = "true";
+			  document.body.appendChild(audio3);
+			  text2.remove();
+			  imageHat.remove();
+			  document.body.background= "";
+			}
+
+
+			audio3.onended = function() {welcome()};
+
+			function welcome(){
+			  audio4.src="audio4.mp3";
+			  audio4.autoplay = "true";
+			  document.body.appendChild(audio4);
+			  document.body.background="image5.jpg";
+			  document.body.style.backgroundSize="cover";
+
+			}
+
+
+			audio4.onended = function() {scream()};
+
+			function scream() {
+				document.body.background="";
+				audio7.src="audio7.mp3";
+			    audio7.autoplay = "true";
+			    document.body.appendChild(audio7);
+			}
+
+
+		
+
+			audio7.onended = function() {glove()};
+
+			function glove(){
+			  audio5.src="audio5.mp3";
+			  audio5.autoplay = "true";
+			  document.body.appendChild(audio5);
+			  document.body.background= "";
+			  imageGlove.src="image3.png";
+			  document.body.appendChild(imageGlove);
+			  imageGlove.id="glove";
+			  imageGlove.style.width="900px";
+			  imageGlove.style.position = "absolute";
+			  imageGlove.style.top = "50px";
+			  imageGlove.style.right = "300px";
+			  document.body.style.backgroundColor = "black";
+			}
+
+			audio5.onended = function() {freddy()};
+
+				function freddy() {
+				imageGlove.remove();
+				document.body.style.backgroundColor = "red";
+				audio8.src="audio8.mp3";
+			    audio8.autoplay = "true";
+			    document.body.appendChild(audio8);
+			    document.body.background="image8.png";
+			    document.body.style.backgroundSize="900px"
+			}
+
+
+			audio8.onended = function() {moviePoster()};
+
+			function moviePoster() {
+				setTimeout(function(){goodbye()}, 5000);
+				document.body.style.backgroundColor = "black";
+				document.body.background="image9.jpg";
+				document.body.style.backgroundSize="400px";
+			}
+
+			function goodbye() {
+				alert("GOODBYE!!")
+			}
+
+		</script>
+	
+	</body>
+</html>
