@@ -9,6 +9,16 @@
 
 		<style>
 
+			#enter {
+				animation: blink 1s linear infinite
+			}
+
+			@keyframes blink {
+				0% {opacity: 0;}
+				50% {opacity: .5;}
+				100% {opacity: 1;}
+			}
+
 			body {
 			  overflow: hidden;
 			}
@@ -186,9 +196,10 @@
 			    margin: auto;
 			}
 
-			img:hover{
+			span {
 				cursor: pointer;
 			}
+
 
 		</style>
 
@@ -196,9 +207,10 @@
 			<source src="audio.mp3" type="audio/mpeg">
 		</audio>
 		
+		<h1 id="enter" onclick="dontFallAsleep()"
+		style="font-size: 20px;color:white; text-align: center;"><span>ENTER</span></h1>		
 
-
-		<img id="nightmare" onclick="dontFallAsleep()" src="image.png" alt="A nightmare on Elm Street movie poster">
+		<img id="nightmare" src="image.png" alt="A nightmare on Elm Street movie poster">
 
 		  <div id="animation" class="drop"></div>
 	  	  <div id="animation2" class="wave"></div>
@@ -207,6 +219,7 @@
 
 			var audio = document.getElementById("audio")
 			var image = document.getElementById("nightmare")
+			var enterText = document.getElementById("enter")
 			var text = document.createElement("p")
 			var text2 = document.createElement("p")
 			var audio2 = document.createElement("audio")
@@ -224,6 +237,7 @@
 			function dontFallAsleep() {
 				audio.play();
 				image.remove();
+				enterText.remove();
 				document.getElementById("animation").remove();
 				document.getElementById("animation2").remove();
 				setTimeout(function(){text.innerHTML="Whatever"}, 100);
